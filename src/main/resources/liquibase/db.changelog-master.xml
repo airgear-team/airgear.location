@@ -1,0 +1,68 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <!-- ChangeSet for creating the country table -->
+    <changeSet id="create-country-table" author="Opanasenko-Mykhailo">
+        <createTable tableName="country">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- ChangeSet for creating the region table -->
+    <changeSet id="create-region-table" author="Opanasenko-Mykhailo">
+        <createTable tableName="region">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="region"
+                                 baseColumnNames="country_id"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_region_country"/>
+    </changeSet>
+
+
+    <!-- ChangeSet for creating the settlement table -->
+    <changeSet id="create-settlement-table" author="Opanasenko-Mykhailo">
+        <createTable tableName="settlement">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unique_settlementid" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="settlement_type" type="varchar(255)">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="settlement"
+                                 baseColumnNames="region_id"
+                                 referencedTableName="region"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_settlement_region"/>
+    </changeSet>
+
+    <!-- Change set for adding a country with name "Україна" -->
+    <changeSet id="addCountryUkraine" author="Opanasenko-Mykhailo">
+        <sql>INSERT INTO country (name) VALUES ('Україна');</sql>
+    </changeSet>
+</databaseChangeLog>
