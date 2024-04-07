@@ -1,9 +1,7 @@
 package com.airgear.location.dto;
 
-import com.airgear.location.model.Region;
 import com.airgear.location.model.SettlementType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
