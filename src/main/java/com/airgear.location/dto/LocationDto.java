@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LocationDto {
-    private Integer uniqueSettlementId;
+    private Integer uniqueSettlementID;
     private String name;
     private String region;
     private SettlementType settlementType;

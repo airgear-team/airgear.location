@@ -1,8 +1,10 @@
 package com.airgear.location.service;
 
 import com.airgear.location.dto.LocationDto;
+import com.airgear.location.mapper.LocationMapper;
 import com.airgear.location.model.Settlement;
 import com.airgear.location.repository.SettlementRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,32 +12,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class LocationService {
 
-    @Autowired
-    private SettlementRepository settlementRepository;
+    private final SettlementRepository settlementRepository;
+    private final LocationMapper locationMapper;
 
     public List<LocationDto> findByCityNameStartingWith(String prefix) {
         List<Settlement> settlements = settlementRepository.findByNameStartingWithIgnoreCase(prefix);
         return settlements.stream()
-                .map(this::convertToLocationDto)
+                .map(locationMapper::toDto)
                 .collect(Collectors.toList());
     }
+
     public LocationDto findByUniqueSettlementId(Integer uniqueSettlementId) {
         Settlement settlement = settlementRepository.findByUniqueSettlementID(uniqueSettlementId);
-        if (settlement != null) {
-            return convertToLocationDto(settlement);
-        } else {
-            return null;
-        }
-    }
-
-    private LocationDto convertToLocationDto(Settlement settlement) {
-        LocationDto dto = new LocationDto();
-        dto.setName(settlement.getName());
-        dto.setRegion(settlement.getRegion().getName());
-        dto.setSettlementType(settlement.getSettlementType());
-        dto.setUniqueSettlementId(settlement.getUniqueSettlementID());
-        return dto;
+        return locationMapper.toDto(settlement);
     }
 }
