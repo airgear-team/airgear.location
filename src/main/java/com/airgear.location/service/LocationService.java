@@ -21,6 +21,14 @@ public class LocationService {
                 .map(this::convertToLocationDto)
                 .collect(Collectors.toList());
     }
+    public LocationDto findByUniqueSettlementId(Integer uniqueSettlementId) {
+        Settlement settlement = settlementRepository.findByUniqueSettlementID(uniqueSettlementId);
+        if (settlement != null) {
+            return convertToLocationDto(settlement);
+        } else {
+            return null;
+        }
+    }
 
     private LocationDto convertToLocationDto(Settlement settlement) {
         LocationDto dto = new LocationDto();

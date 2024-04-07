@@ -21,6 +21,7 @@ public class Settlement {
     @JoinColumn(name = "region_id", nullable = false)
     private Region region;
 
+    @Column(unique = true)
     private Integer uniqueSettlementID;
 
     @Enumerated(EnumType.STRING)

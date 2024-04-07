@@ -12,4 +12,6 @@ public interface SettlementRepository extends JpaRepository<Settlement, Long> {
 
     Optional<Settlement> findByName(String cityName);
     List<Settlement> findByNameStartingWithIgnoreCase(String prefix);
+
+    Settlement findByUniqueSettlementID(Integer uniqueSettlementId);
 }

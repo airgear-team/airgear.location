@@ -6,10 +6,7 @@ import com.airgear.location.service.LocationService;
 import com.airgear.location.service.NovaPoshtaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +31,15 @@ public class LocationController {
         }
 
         return ResponseEntity.ok(locations);
+    }
+    @GetMapping("/{uniqueSettlementId}")
+    public ResponseEntity<LocationDto> getLocationByUniqueSettlementId(@PathVariable Integer uniqueSettlementId) {
+        LocationDto locationDto = locationService.findByUniqueSettlementId(uniqueSettlementId);
+        if (locationDto != null) {
+            return ResponseEntity.ok(locationDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/update-base")
