@@ -5,10 +5,10 @@ import com.airgear.location.dto.LocationDto;
 import com.airgear.location.service.LocationService;
 import com.airgear.location.service.NovaPoshtaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping()
@@ -19,19 +19,15 @@ public class LocationController {
     private NovaPoshtaService novaPoshtaService;
 
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/locations")
-    public ResponseEntity<List<LocationDto>> getLocationsByCityPrefix(@RequestParam String prefix) {
+    public ResponseEntity<Page<LocationDto>> getLocationsByCityPrefix(@RequestParam String prefix, Pageable pageable) {
         if (prefix == null || prefix.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-
-        List<LocationDto> locations = locationService.findByCityNameStartingWith(prefix);
-        if (locations.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(locations);
+        return ResponseEntity.ok(locationService.findByCityNameStartingWith(prefix, pageable));
     }
+
     @GetMapping("/{uniqueSettlementId}")
     public ResponseEntity<LocationDto> getLocationByUniqueSettlementId(@PathVariable Integer uniqueSettlementId) {
         LocationDto locationDto = locationService.findByUniqueSettlementId(uniqueSettlementId);

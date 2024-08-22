@@ -1,6 +1,8 @@
 package com.airgear.location.repository;
 
 import com.airgear.model.Location;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +13,7 @@ import java.util.Optional;
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
     Optional<Location> findBySettlement(String cityName);
-    List<Location> findBySettlementStartingWithIgnoreCase(String prefix);
+    Page<Location> findBySettlementStartingWithIgnoreCase(String prefix, Pageable page);
 
     Location findByUniqueSettlementID(Integer uniqueSettlementId);
 }

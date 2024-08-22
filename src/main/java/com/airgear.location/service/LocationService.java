@@ -5,6 +5,8 @@ import com.airgear.location.mapper.LocationMapper;
 import com.airgear.model.Location;
 import com.airgear.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +19,9 @@ public class LocationService {
     private final LocationRepository locationRepository;
     private final LocationMapper locationMapper;
 
-    public List<LocationDto> findByCityNameStartingWith(String prefix) {
-        List<Location> locations = locationRepository.findBySettlementStartingWithIgnoreCase(prefix);
-        return locations.stream()
-                .map(locationMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<LocationDto> findByCityNameStartingWith(String prefix, Pageable pageable) {
+        Page<Location> locations = locationRepository.findBySettlementStartingWithIgnoreCase(prefix, pageable);
+        return locations.map(locationMapper::toDto);
     }
 
     public LocationDto findByUniqueSettlementId(Integer uniqueSettlementId) {
